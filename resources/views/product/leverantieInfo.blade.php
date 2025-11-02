@@ -43,7 +43,7 @@
 								<th scope="col">Datum laatste levering</th>
 								<th scope="col">Aantal</th>
 								<th scope="col">Eerstvolgende levering</th>
-						</tr>
+							</tr>
 						</thead>
 						<tbody>
 							@if ($toonFallback)
@@ -78,4 +78,4 @@
 			</div>
 		</div>
 	</div>
-	@endsection
+@endsection

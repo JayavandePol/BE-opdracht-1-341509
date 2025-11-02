@@ -1,96 +1,64 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ $title }}</title>
-	@if ($toonFallback)
+@extends('layouts.app')
+
+@if ($toonFallback)
+	@push('head')
 		<meta http-equiv="refresh" content="4;url={{ route('product.index') }}">
-	@endif
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container">
-			<a class="navbar-brand" href="{{ route('home') }}">Jamin Magazijn</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Navigatie wisselen">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="mainNavbar">
-				<ul class="navbar-nav me-auto">
-					<li class="nav-item">
-						<a class="nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}" href="{{ route('product.index') }}">Overzicht Magazijn</a>
-					</li>
-				</ul>
-				<div class="d-flex gap-2">
-					<a class="btn btn-outline-light btn-sm" href="{{ route('home') }}">Home</a>
-					<a class="btn btn-outline-light btn-sm" href="{{ route('product.index') }}">Magazijn</a>
+	@endpush
+@endif
+
+@section('content')
+	<div class="row justify-content-center">
+		<div class="col-lg-10">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h1 class="mb-0">{{ $title }}</h1>
+				<a href="{{ route('product.index') }}" class="btn btn-link">&laquo; Terug naar overzicht</a>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-body">
+					<h2 class="h5 mb-3">Productinformatie</h2>
+					<dl class="row mb-0">
+						<dt class="col-sm-3">Naam product</dt>
+						<dd class="col-sm-9">{{ $product->Naam ?? 'Onbekend' }}</dd>
+						<dt class="col-sm-3">Barcode</dt>
+						<dd class="col-sm-9">{{ $product->Barcode ?? 'Onbekend' }}</dd>
+					</dl>
 				</div>
 			</div>
-		</div>
-	</nav>
 
-	<main class="container py-5">
-		<div class="row justify-content-center">
-			<div class="col-lg-10">
-				<div class="d-flex justify-content-between align-items-center mb-4">
-					<h1 class="mb-0">{{ $title }}</h1>
-					<a href="{{ route('product.index') }}" class="btn btn-link">&laquo; Terug naar overzicht</a>
-				</div>
-
-				<div class="card mb-4">
-					<div class="card-body">
-						<h2 class="h5 mb-3">Productinformatie</h2>
-						<dl class="row mb-0">
-							<dt class="col-sm-3">Naam product</dt>
-							<dd class="col-sm-9">{{ $product->Naam ?? 'Onbekend' }}</dd>
-							<dt class="col-sm-3">Barcode</dt>
-							<dd class="col-sm-9">{{ $product->Barcode ?? 'Onbekend' }}</dd>
-						</dl>
-					</div>
-				</div>
-
-				<div class="card shadow-sm">
-					<div class="card-body">
-						<h2 class="h5 mb-3">Allergenen</h2>
-						<table class="table table-striped align-middle">
-							<thead class="table-light">
+			<div class="card shadow-sm">
+				<div class="card-body">
+					<h2 class="h5 mb-3">Allergenen</h2>
+					<table class="table table-striped align-middle">
+						<thead class="table-light">
+							<tr>
+								<th scope="col">Naam</th>
+								<th scope="col">Omschrijving</th>
+							</tr>
+						</thead>
+						<tbody>
+							@if ($toonFallback)
 								<tr>
-									<th scope="col">Naam</th>
-									<th scope="col">Omschrijving</th>
+									<td colspan="2" class="text-center fw-semibold">
+										In dit product zitten geen stoffen die een allergische reactie kunnen veroorzaken.
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								@if ($toonFallback)
+							@elseif ($allergenen->isEmpty())
+								<tr>
+									<td colspan="2" class="text-center">Er zijn geen allergenen geregistreerd.</td>
+								</tr>
+							@else
+								@foreach ($allergenen as $allergeen)
 									<tr>
-										<td colspan="2" class="text-center fw-semibold">
-											In dit product zitten geen stoffen die een allergische reactie kunnen veroorzaken.
-										</td>
+										<td>{{ $allergeen->AllergeenNaam }}</td>
+										<td>{{ $allergeen->AllergeenOmschrijving }}</td>
 									</tr>
-								@elseif ($allergenen->isEmpty())
-									<tr>
-										<td colspan="2" class="text-center">Er zijn geen allergenen geregistreerd.</td>
-									</tr>
-								@else
-									@foreach ($allergenen as $allergeen)
-										<tr>
-											<td>{{ $allergeen->AllergeenNaam }}</td>
-											<td>{{ $allergeen->AllergeenOmschrijving }}</td>
-										</tr>
-									@endforeach
-								@endif
-							</tbody>
-						</table>
-					</div>
+								@endforeach
+							@endif
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
-	</main>
-
-	<footer class="bg-light border-top py-3 mt-auto">
-		<div class="container text-center">
-			<small class="text-muted">&copy; {{ now()->year }} Jamin Magazijn. Alle rechten voorbehouden.</small>
-		</div>
-	</footer>
-</body>
-</html>
+	</div>
+@endsection
