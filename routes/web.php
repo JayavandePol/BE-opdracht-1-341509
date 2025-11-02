@@ -24,11 +24,11 @@ Route::get('/allergeen/{id}/edit', [AllergeenController::class, 'edit'])->name('
 
 Route::put('/allergeen/{id}', [AllergeenController::class, 'update'])->name('allergeen.update');
 
-Route::get('/products', [ProductController::class, 'index'])->name('product.index');
-
-Route::get('/product/{id}/allergenenInfo', [ProductController::class, 'allergenenInfo'])->name('product.allergenenInfo');
-
-Route::get('/product/{id}/leverantieInfo', [ProductController::class, 'leverantieInfo'])->name('product.leverantieInfo');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/products', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/product/{id}/allergenenInfo', [ProductController::class, 'allergenenInfo'])->name('product.allergenenInfo');
+    Route::get('/product/{id}/leverantieInfo', [ProductController::class, 'leverantieInfo'])->name('product.leverantieInfo');
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

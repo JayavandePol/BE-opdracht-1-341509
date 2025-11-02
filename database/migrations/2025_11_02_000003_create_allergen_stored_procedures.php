@@ -10,6 +10,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         // Allergenen procedures
         DB::unprepared('DROP PROCEDURE IF EXISTS Sp_GetAllAllergenen');
         DB::unprepared(<<<'SQL'
@@ -138,6 +142,25 @@ BEGIN
 END
 SQL
         );
+
+        DB::unprepared('DROP PROCEDURE IF EXISTS sp_GetAllergenenByProduct');
+        DB::unprepared(<<<'SQL'
+CREATE PROCEDURE sp_GetAllergenenByProduct(
+    IN p_productId INT
+)
+BEGIN
+    SELECT PROD.Id AS ProductId,
+           PROD.Naam AS ProductNaam,
+           PROD.Barcode,
+           ALGE.Naam AS AllergeenNaam,
+           ALGE.Omschrijving AS AllergeenOmschrijving
+    FROM Product AS PROD
+    LEFT JOIN ProductPerAllergeen AS PPA ON PPA.ProductId = PROD.Id
+    LEFT JOIN Allergeen AS ALGE ON ALGE.Id = PPA.AllergeenId
+    WHERE PROD.Id = p_productId;
+END
+SQL
+        );
     }
 
     /**
@@ -145,6 +168,10 @@ SQL
      */
     public function down(): void
     {
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         DB::unprepared('DROP PROCEDURE IF EXISTS Sp_GetAllAllergenen');
         DB::unprepared('DROP PROCEDURE IF EXISTS sp_CreateAllergeen');
         DB::unprepared('DROP PROCEDURE IF EXISTS sp_DeleteAllergeen');
@@ -153,5 +180,6 @@ SQL
         DB::unprepared('DROP PROCEDURE IF EXISTS sp_GetAllProducts');
         DB::unprepared('DROP PROCEDURE IF EXISTS sp_GetLeverancierInfo');
         DB::unprepared('DROP PROCEDURE IF EXISTS sp_GetLeverantieInfo');
+        DB::unprepared('DROP PROCEDURE IF EXISTS sp_GetAllergenenByProduct');
     }
 };

@@ -30,10 +30,38 @@ class ProductController extends Controller
         ]);
     }
 
-    public function allergenenInfo()
+    public function allergenenInfo(int $id)
     {
+        $rows = $this->productModel->sp_GetAllergenenByProduct($id);
+
+        if (empty($rows)) {
+            return redirect()
+                ->route('product.index')
+                ->with('error', 'Product met allergeneninformatie is niet gevonden.');
+        }
+
+        $collection = collect($rows);
+        $productRow = $collection->first();
+
+        if (!$productRow) {
+            return redirect()
+                ->route('product.index')
+                ->with('error', 'Product met allergeneninformatie is niet gevonden.');
+        }
+
+        $allergenen = $collection
+            ->filter(fn ($row) => !empty($row->AllergeenNaam))
+            ->sortBy(fn ($row) => $row->AllergeenNaam)
+            ->values();
+
         return view('product.allergeenInfo', [
-            'title' => 'Allergeen Informatie'
+            'title' => 'Overzicht Allergenen',
+            'product' => (object) [
+                'Naam' => $productRow->ProductNaam,
+                'Barcode' => $productRow->Barcode,
+            ],
+            'allergenen' => $allergenen,
+            'toonFallback' => $allergenen->isEmpty(),
         ]);
     }
 
