@@ -26,6 +26,12 @@
                 <nav class="flex items-center justify-end gap-4">
                     @auth
                         <a
+                            href="{{ route('product.index') }}"
+                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                        >
+                            Overzicht Magazijn Jamin
+                        </a>
+                        <a
                             href="{{ url('/dashboard') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                         >
@@ -114,6 +120,11 @@
                         </li>
                     </ul>
                     <ul class="flex gap-3 text-sm leading-normal">
+                        <li>
+                            <a href="{{ route('product.index') }}" class="inline-block px-5 py-1.5 border border-[#19140035] dark:border-[#3E3E3A] dark:text-[#EDEDEC] hover:border-[#1915014a] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
+                                Naar Overzicht Magazijn Jamin
+                            </a>
+                        </li>
                         <li>
                             <a href="https://cloud.laravel.com" target="_blank" class="inline-block dark:bg-[#eeeeec] dark:border-[#eeeeec] dark:text-[#1C1C1A] dark:hover:bg-white dark:hover:border-white hover:bg-black hover:border-black px-5 py-1.5 bg-[#1b1b18] rounded-sm border border-black text-white text-sm leading-normal">
                                 Deploy now

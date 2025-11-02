@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Allergeen
    ,IsActief        BIT                             NOT NULL    DEFAULT 1
    ,Opmerkingen     VARCHAR(250)                        NULL    DEFAULT NULL
    ,DatumAangemaakt DateTime(6)                     NOT NULL    DEFAULT CURRENT_TIMESTAMP(6)
-   ,DatumGewijzigd  DateTime(6)                     NOT NULL    DEFAULT CURRENT_TIMESTAMP(6)
+    ,DatumGewijzigd  DateTime(6)                     NOT NULL    DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
    ,CONSTRAINT      PK_Allergeen_Id   PRIMARY KEY CLUSTERED(Id)
 ) ENGINE=InnoDB;
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS Product
     ,IsActief        BIT                                   NOT NULL      DEFAULT 1
     ,Opmerkingen     VARCHAR(255)                              NULL      DEFAULT NULL
     ,DatumAangemaakt Datetime(6)                           NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
-    ,DatumGewijzigd  Datetime(6)                           NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
+        ,DatumGewijzigd  Datetime(6)                           NOT NULL      DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
     ,CONSTRAINT      PK_Product_Id        PRIMARY KEY CLUSTERED (Id)
 ) ENGINE=InnoDB   AUTO_INCREMENT=1;
 
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS Magazijn
     ,IsActief             BIT                               NOT NULL      DEFAULT 1
     ,Opmerkingen          VARCHAR(255)                          NULL      DEFAULT NULL
     ,DatumAangemaakt      Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
-    ,DatumGewijzigd       Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
+        ,DatumGewijzigd       Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
     ,CONSTRAINT           PK_Magazijn_Id                    PRIMARY KEY CLUSTERED (Id)
     ,CONSTRAINT           FK_Magazijn_ProductId_Product_Id  FOREIGN KEY (ProductId) REFERENCES Product(Id)
 ) ENGINE=InnoDB   AUTO_INCREMENT=1;
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS Leverancier
     ,IsActief           BIT                                  NOT NULL      DEFAULT 1
     ,Opmerkingen        VARCHAR(255)                             NULL      DEFAULT NULL
     ,DatumAangemaakt Datetime(6)                             NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
-    ,DatumGewijzigd  Datetime(6)                             NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
+        ,DatumGewijzigd  Datetime(6)                             NOT NULL      DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
     ,CONSTRAINT      PK_Levrancier_Id        PRIMARY KEY CLUSTERED (Id)
 ) ENGINE=InnoDB   AUTO_INCREMENT=1;
 
@@ -232,9 +232,10 @@ CREATE TABLE IF NOT EXISTS ProductPerLeverancier
     ,IsActief                       BIT                               NOT NULL      DEFAULT 1
     ,Opmerkingen                    VARCHAR(255)                          NULL      DEFAULT NULL
     ,DatumAangemaakt                Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
-    ,DatumGewijzigd                 Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
+        ,DatumGewijzigd                 Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
     ,CONSTRAINT                     PK_ProductPerLeverancier_Id       PRIMARY KEY CLUSTERED (Id)
     ,CONSTRAINT                     FK_ProductPerLeverancier_LeverancierId_Leverancier_Id  FOREIGN KEY (LeverancierId) REFERENCES Leverancier (Id)
+    ,CONSTRAINT                     FK_ProductPerLeverancier_ProductId_Product_Id  FOREIGN KEY (ProductId) REFERENCES Product (Id)
 ) ENGINE=InnoDB   AUTO_INCREMENT=1;
 
 
@@ -291,7 +292,7 @@ CREATE TABLE IF NOT EXISTS ProductPerAllergeen
     ,IsActief                       BIT                               NOT NULL      DEFAULT 1
     ,Opmerkingen                    VARCHAR(255)                          NULL      DEFAULT NULL
     ,DatumAangemaakt                Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
-    ,DatumGewijzigd                 Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6)
+        ,DatumGewijzigd                 Datetime(6)                       NOT NULL      DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
     ,CONSTRAINT           PK_ProductPerAllergeen_Id  PRIMARY KEY CLUSTERED (Id)
     ,CONSTRAINT           FK_ProductPerAllergeen_ProductId_Product_Id  FOREIGN KEY (ProductId) REFERENCES Product (Id)
     ,CONSTRAINT           FK_ProductPerAllergeen_AllergeenId_Allergeen_Id  FOREIGN KEY (AllergeenId) REFERENCES Allergeen (Id)
